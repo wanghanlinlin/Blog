@@ -1,0 +1,24 @@
+mysql:
+  host: 124.222.46.195
+  port: 3306
+  db: Aurora
+  user: root
+  password: wang
+  log_level: dev
+
+system:
+  host: "0.0.0.0"
+  port: 8080
+  env: dev
+
+logger:
+  # 日志等级
+  level: info
+  # 日志前缀
+  prefix: `[Aurora]`
+  # 日志目录
+  director: log
+  # 是否显示行号
+  show-line: true
+  # 是否显示文件路径
+  log-in-console: true
