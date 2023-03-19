@@ -1,24 +1,27 @@
 mysql:
-  host: 124.222.46.195
+  host: '124.222.46.195'
   port: 3306
-  db: Aurora
-  user: root
-  password: wang
-  log_level: dev
+  db: 'Aurora'
+  user: 'root'
+  password: 'wang'
+  charset: 'utf8mb4'
+  parseTime: 'True'
+  loc: "Local"
+  log_level: 'debug'
 
 system:
-  host: "0.0.0.0"
+  host: '0.0.0.0'
   port: 8080
-  env: dev
+  env: 'release'
 
 logger:
   # 日志等级
-  level: info
+  level: 'debug' #panic fatal error warn info debug trace
   # 日志前缀
-  prefix: `[Aurora]`
+  prefix: '[Aurora]'
   # 日志目录
-  director: log
+  director: 'log'
   # 是否显示行号
-  show-line: true
+  show-line: false
   # 是否显示文件路径
   log-in-console: true
