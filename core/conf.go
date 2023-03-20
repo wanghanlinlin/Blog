@@ -11,6 +11,8 @@ import (
 )
 
 func InitConf() {
+	//加载logo
+	loadLogo()
 	//配置全局变量
 	global.Config = readConf()
 	//log输出
@@ -39,4 +41,17 @@ func readConf() *config.Config {
 	}
 
 	return config
+}
+
+// 加载logo
+func loadLogo() {
+	logoFilePath := "banner.txt"
+
+	//读取logo文件
+	logo, readErr := ioutil.ReadFile(logoFilePath)
+	if readErr != nil {
+		//将错误信息格式化字符串输出
+		return
+	}
+	fmt.Println(string(logo))
 }
