@@ -7,19 +7,32 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// router运行
 func Run() {
 	logrus.Infof("%v-服务启动", global.Config.SystemConfig.Port)
 	initGin().Run(global.Config.ServerAddress())
 }
 
+// router结构体
+type Routers struct {
+}
+
 // 初始化路由
 func initGin() *gin.Engine {
+	//配置Gin开发环境
 	gin.SetMode(global.Config.Env)
+
+	//路由配置
 	router := gin.Default()
-	router.GET("/hello", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "欢迎来到Aurora!",
-		})
-	})
+
+	//路由组
+	routerGroup := router.Group("api")
+
+	//初始化路由体
+	routers := Routers{}
+
+	//系统api
+	routers.SystemRouter(routerGroup)
+
 	return router
 }
