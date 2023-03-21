@@ -1,7 +1,7 @@
 package systemapi
 
 import (
-	"AuroraPixel/model/res"
+	"AuroraPixel/core/res"
 
 	"github.com/gin-gonic/gin"
 )

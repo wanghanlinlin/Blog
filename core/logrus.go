@@ -69,19 +69,19 @@ func getLevel() logrus.Level {
 	return level
 }
 
-// 自定义log
+// 自定义logo
 func myLogger() *logrus.Logger {
 	mLog := logrus.New()
 	mLog.SetOutput(os.Stdout)
 	mLog.SetReportCaller(global.Config.ShowLine)
 	mLog.SetFormatter(&logFormatter{})
 	mLog.SetLevel(getLevel())
-	//全局log生效
+	//全局logo生效
 	defaultLogger()
 	return mLog
 }
 
-// 全局log的配置
+// 全局logo的配置
 func defaultLogger() {
 	logrus.SetOutput(os.Stdout)                    //输出类型
 	logrus.SetReportCaller(global.Config.ShowLine) //开启函数名和行号

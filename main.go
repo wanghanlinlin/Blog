@@ -2,7 +2,10 @@ package main
 
 import (
 	"AuroraPixel/core"
+	"AuroraPixel/flag"
 	"AuroraPixel/routers"
+
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -12,6 +15,17 @@ func main() {
 	core.InitLogger()
 	//加载数据库
 	core.InitDb()
+
+	//数据库迁移
+	option := flag.Parse()
+	if flag.IsWebStop(option) {
+		flag.SwitchOption(option)
+		return
+	}
+
 	//运行服务
-	routers.Run()
+	erro := routers.Run()
+	if erro != nil {
+		logrus.Errorln(erro)
+	}
 }

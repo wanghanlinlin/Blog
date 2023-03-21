@@ -8,9 +8,9 @@ import (
 )
 
 // router运行
-func Run() {
+func Run() error {
 	logrus.Infof("%v-服务启动", global.Config.SystemConfig.Port)
-	initGin().Run(global.Config.ServerAddress())
+	return initGin().Run(global.Config.ServerAddress())
 }
 
 // router结构体
