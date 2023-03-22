@@ -14,7 +14,7 @@ type CommentModel struct {
 	CommentCount int          `json:"commentCount"`                        //子评论量
 	DiggCount    int          `json:"digg_count"`                          //点赞量
 	Article      ArticleModel `gorm:"foreignkey:ArticleID" json:"article"` //关联的文章
-	ArticleID    uint         `json:"articleId"`                           //文章ID
+	ArticleID    uint         `json:"articleID"`                           //文章ID
 	User         UserModel    `json:"user"`                                //关联用户
 	UserID       uint         `json:"userID"`                              //用户id
 }
