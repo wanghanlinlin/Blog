@@ -14,6 +14,8 @@ func Makemigrations() {
 
 	global.DB.SetupJoinTable(&models.ArticleModel{}, "TagModels", &models.AriticleTag{})
 
+	global.DB.SetupJoinTable(&models.MenuModel{}, "MenuBanners", &models.MenuImages{})
+
 	//迁移数据库
 	err := global.DB.Set("gorm:table_options", "ENGINE=InnoDB").
 		Migrator().AutoMigrate(
@@ -24,6 +26,10 @@ func Makemigrations() {
 		&models.BannerModel{},
 		&models.CommentModel{},
 		&models.TagModel{},
+		&models.MenuModel{},
+		&models.MenuImages{},
+		&models.MessageModel{},
+		&models.FadeBackModel{},
 	)
 	if err != nil {
 		logrus.Errorln("数据库初始化失败!", err)

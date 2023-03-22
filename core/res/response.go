@@ -59,3 +59,12 @@ func ErrorWithCode(code ErrorCode, c *gin.Context) {
 	}
 	Result(Erro, map[string]any{}, "未知错误", c)
 }
+
+func ErrorWithCodeData(data any, code ErrorCode, c *gin.Context) {
+	message, ok := ErrorCodeMap[code]
+	if ok {
+		Result(int(code), data, message, c)
+		return
+	}
+	Result(Erro, data, "未知错误", c)
+}

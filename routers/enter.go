@@ -33,6 +33,8 @@ func initGin() *gin.Engine {
 
 	//系统api
 	routers.SystemRouter(routerGroup)
+	//图片api
+	routers.imagesRouter(routerGroup)
 
 	return router
 }
