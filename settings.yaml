@@ -25,3 +25,7 @@ logger:
   show-line: false
   # 是否显示文件路径
   log-in-console: true
+
+images:
+  path: 'static/images'
+  size: 20 #上传图片大小 单位MB

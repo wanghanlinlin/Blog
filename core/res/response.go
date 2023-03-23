@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -45,19 +46,22 @@ func Error(data any, message string, c *gin.Context) {
 
 func ErrorWithMessage(message string, c *gin.Context) {
 	Result(Erro, map[string]any{}, message, c)
+	logrus.Panicf(message)
 }
 
 func ErrorWithData(data any, c *gin.Context) {
 	Result(Erro, data, "查询失败", c)
+	logrus.Panicf("查询失败")
 }
 
 func ErrorWithCode(code ErrorCode, c *gin.Context) {
 	message, ok := ErrorCodeMap[code]
 	if ok {
 		Result(int(code), map[string]any{}, message, c)
-		return
+		logrus.Panicf(message)
 	}
 	Result(Erro, map[string]any{}, "未知错误", c)
+	logrus.Panicf("未知错误")
 }
 
 func ErrorWithCodeData(data any, code ErrorCode, c *gin.Context) {
@@ -67,4 +71,5 @@ func ErrorWithCodeData(data any, code ErrorCode, c *gin.Context) {
 		return
 	}
 	Result(Erro, data, "未知错误", c)
+	logrus.Panicf("未知错误")
 }
