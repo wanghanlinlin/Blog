@@ -1,6 +1,7 @@
 package imagesapi
 
 import (
+	"AuroraPixel/core/plugins"
 	"AuroraPixel/core/res"
 	"AuroraPixel/global"
 	"AuroraPixel/models"
@@ -111,4 +112,24 @@ func (i ImagesApi) Upload(c *gin.Context) {
 		})
 	}
 	res.Ok(result, "图片上传操作成功", c)
+}
+
+// 分页列表
+func (i ImagesApi) PageList(c *gin.Context) {
+	var ipage plugins.IPage
+	err := c.ShouldBindQuery(&ipage)
+	if err != nil {
+		res.ErrorWithCodeData(err, res.ArgumentError, c)
+	}
+	//分页查询
+	var BannerModels []models.BannerModel
+	d := global.DB
+	if ipage.Key != "" {
+		d = d.Where("name like '%" + ipage.Key + "%'")
+	} else {
+		d = d.Where(&models.BannerModel{})
+	}
+
+	result := ipage.Query(d, BannerModels, "created_at desc")
+	res.OkWithData(result, c)
 }
