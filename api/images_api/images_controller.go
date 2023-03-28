@@ -119,17 +119,10 @@ func (i ImagesApi) PageList(c *gin.Context) {
 	var ipage plugins.IPage
 	err := c.ShouldBindQuery(&ipage)
 	if err != nil {
-		res.ErrorWithCodeData(err, res.ArgumentError, c)
+		res.ErrorWithCodeData(err.Error(), res.ArgumentError, c)
 	}
 	//分页查询
-	var BannerModels []models.BannerModel
-	d := global.DB
-	if ipage.Key != "" {
-		d = d.Where("name like '%" + ipage.Key + "%'")
-	} else {
-		d = d.Where(&models.BannerModel{})
-	}
-
-	result := ipage.Query(d, BannerModels, "created_at desc")
+	var BannerModel models.BannerModel = models.BannerModel{}
+	result := plugins.PageQuery(BannerModel, "created_at desc", ipage)
 	res.OkWithData(result, c)
 }

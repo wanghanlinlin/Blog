@@ -68,7 +68,7 @@ func ErrorWithCodeData(data any, code ErrorCode, c *gin.Context) {
 	message, ok := ErrorCodeMap[code]
 	if ok {
 		Result(int(code), data, message, c)
-		return
+		logrus.Panicf(message)
 	}
 	Result(Erro, data, "未知错误", c)
 	logrus.Panicf("未知错误")
