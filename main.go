@@ -15,7 +15,8 @@ func main() {
 	core.InitLogger()
 	//加载数据库
 	core.InitDb()
-
+	//加载minio
+	core.InitMinio()
 	//数据库迁移
 	option := flag.Parse()
 	if flag.IsWebStop(option) {
