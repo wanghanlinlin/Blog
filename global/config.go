@@ -3,6 +3,7 @@ package global
 import (
 	"AuroraPixel/config"
 
+	"github.com/minio/minio-go/v7"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -13,4 +14,5 @@ var (
 	Config *config.Config
 	DB     *gorm.DB
 	Log    *logrus.Logger
+	Minio  *minio.Client
 )

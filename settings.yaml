@@ -29,3 +29,13 @@ logger:
 images:
   path: 'static/images'
   size: 20 #上传图片大小 单位MB
+
+minio:
+  # 站点
+  endpoint: '124.222.46.195:9000'
+  # 密钥
+  accessKeyID: 'wang_test'
+  # 密钥密码
+  secretAccessKey: 'wang12345678'
+  # 是否https连接
+  useSSL: false

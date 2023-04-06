@@ -7,4 +7,5 @@ type Config struct {
 	conf.LoggerConfig `yaml:"logger"`
 	conf.SystemConfig `yaml:"system"`
 	conf.ImagesConfig `yaml:"images"`
+	conf.MinioConfig  `yaml:"minio"`
 }
