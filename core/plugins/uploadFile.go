@@ -1,12 +1,10 @@
 package plugins
 
 import (
-	"AuroraPixel/core/res"
 	"AuroraPixel/global"
 	"context"
 	"mime/multipart"
 
-	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
 	"github.com/sirupsen/logrus"
 )
@@ -24,17 +22,21 @@ type UploadImagesResult struct {
 }
 
 // 文件上传
-func (u *UplodaImages) UploadFile(c *gin.Context) UploadImagesResult {
+func (u *UplodaImages) UploadFile() (UploadImagesResult, error) {
 	filename := u.File.Filename
 	fileSize := u.File.Size
+
+	//打开文件流
 	uplodaFile, openErr := u.File.Open()
 	if openErr != nil {
-		res.ErrorWithMessage(openErr.Error(), c)
+		return UploadImagesResult{}, openErr
 	}
 	defer uplodaFile.Close()
+
+	//文件上传
 	uploadInfo, err := global.Minio.PutObject(context.Background(), u.BucketName, filename, uplodaFile, fileSize, minio.PutObjectOptions{ContentType: u.ContentType})
 	if err != nil {
-		res.ErrorWithMessage(err.Error(), c)
+		return UploadImagesResult{}, err
 	}
 	logrus.Infoln("mino图片上传成功", uploadInfo)
 
@@ -42,5 +44,5 @@ func (u *UplodaImages) UploadFile(c *gin.Context) UploadImagesResult {
 		Path:     "http://" + global.Config.MinioConfig.Endpoint + "/" + uploadInfo.Bucket + "/" + uploadInfo.Key,
 		FileName: uploadInfo.Key,
 		Size:     uploadInfo.Size,
-	}
+	}, nil
 }

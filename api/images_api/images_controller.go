@@ -7,12 +7,10 @@ import (
 	"AuroraPixel/models"
 	"AuroraPixel/util"
 	"io"
-	"path"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 // 符合场景的图片格式
@@ -94,31 +92,36 @@ func (i ImagesApi) Upload(c *gin.Context) {
 			continue
 		}
 
-		//上传图片
-		path := path.Join(global.Config.ImagesConfig.Path, filename)
-
 		//minio上传图片
 		uploadImage := plugins.UplodaImages{
 			BucketName:  global.Config.MinioConfig.BucketName,
 			File:        value,
 			ContentType: "application/octet-stream",
 		}
-		uploadImagesResult := uploadImage.UploadFile(c)
-		logrus.Info(uploadImagesResult)
+		uploadImagesResult, uploadErro := uploadImage.UploadFile()
+		if uploadErro != nil {
+			result = append(result, ImagesVO{
+				Path:      "",
+				FileName:  filename,
+				IsSuccess: false,
+				Message:   uploadErro.Error(),
+			})
+			continue
+		}
 
 		//添加返回成功值
 		result = append(result, ImagesVO{
-			Path:      path,
-			FileName:  filename,
+			Path:      uploadImagesResult.Path,
+			FileName:  uploadImagesResult.FileName,
 			IsSuccess: true,
 			Message:   "图片上传成功",
 		})
 
 		//图片入库
 		global.DB.Create(&models.BannerModel{
-			Path: path,
+			Path: uploadImagesResult.Path,
 			Hash: md5String,
-			Name: filename,
+			Name: uploadImagesResult.FileName,
 		})
 	}
 	res.Ok(result, "图片上传操作成功", c)
