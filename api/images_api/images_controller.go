@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 // 符合场景的图片格式
@@ -78,6 +79,7 @@ func (i ImagesApi) Upload(c *gin.Context) {
 		file, _ := value.Open()
 		ioByte, _ := io.ReadAll(file)
 		md5String := util.MD5(ioByte)
+		defer file.Close()
 
 		//查询图片是否存在
 		var queryBanner models.BannerModel
@@ -94,7 +96,15 @@ func (i ImagesApi) Upload(c *gin.Context) {
 
 		//上传图片
 		path := path.Join(global.Config.ImagesConfig.Path, filename)
-		c.SaveUploadedFile(value, path)
+
+		//minio上传图片
+		uploadImage := plugins.UplodaImages{
+			BucketName:  global.Config.MinioConfig.BucketName,
+			File:        value,
+			ContentType: "application/octet-stream",
+		}
+		uploadImagesResult := uploadImage.UploadFile(c)
+		logrus.Info(uploadImagesResult)
 
 		//添加返回成功值
 		result = append(result, ImagesVO{

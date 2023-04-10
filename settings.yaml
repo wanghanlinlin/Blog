@@ -33,6 +33,8 @@ images:
 minio:
   # 站点
   endpoint: '124.222.46.195:9000'
+  # 桶
+  bucketName: 'test'
   # 密钥
   accessKeyID: 'wang_test'
   # 密钥密码
