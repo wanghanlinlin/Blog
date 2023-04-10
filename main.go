@@ -8,6 +8,20 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// @title AuroraPixel
+// @version 1.0
+// @description AuroraPixel系统API文档
+// @termsOfService https://www.test.com
+
+// @contact.name www.test.com
+// @contact.url https://www.test.com
+// @contact.email me@test.me
+
+// @license.name AuroraPixel
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host 127.0.0.1:8080
+// @BasePath
 func main() {
 	//加载配置文件
 	core.InitConf()

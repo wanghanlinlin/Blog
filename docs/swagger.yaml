@@ -1,0 +1,15 @@
+host: 127.0.0.1:8080
+info:
+  contact:
+    email: me@test.me
+    name: www.test.com
+    url: https://www.test.com
+  description: AuroraPixel系统API文档
+  license:
+    name: AuroraPixel
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://www.test.com
+  title: AuroraPixel
+  version: "1.0"
+paths: {}
+swagger: "2.0"

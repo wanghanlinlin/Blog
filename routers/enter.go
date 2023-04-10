@@ -1,10 +1,13 @@
 package routers
 
 import (
+	_ "AuroraPixel/docs"
 	"AuroraPixel/global"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // router运行
@@ -24,6 +27,9 @@ func initGin() *gin.Engine {
 
 	//路由配置
 	router := gin.Default()
+
+	//swager
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//路由组
 	routerGroup := router.Group("api")
