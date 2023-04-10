@@ -3,32 +3,14 @@ package imagesapi
 import (
 	"AuroraPixel/core/plugins"
 	"AuroraPixel/core/res"
-	"AuroraPixel/global"
-	"AuroraPixel/models"
-	"AuroraPixel/util"
-	"io"
-	"strconv"
-	"strings"
+	imageservice "AuroraPixel/service/image_service"
 
 	"github.com/gin-gonic/gin"
 )
 
-// 符合场景的图片格式
-var CheckImageType = []string{
-	"jpg",
-	"png",
-	"tif",
-	"gif",
-	"bmp",
-	"svg",
-}
-
-// 图片返回视图
-type ImagesVO struct {
-	Path      string `json:"path"`      //路径
-	FileName  string `json:"fileName"`  //文件名
-	IsSuccess bool   `json:"isSuccess"` //是否成功
-	Message   string `json:"message"`   //消息内容
+// 初始化controller
+func (i *ImagesApi) InitController() {
+	i.ImageService = imageservice.ImageServiceImpl{}
 }
 
 // 图片上传
@@ -42,88 +24,8 @@ func (i ImagesApi) Upload(c *gin.Context) {
 		res.ErrorWithMessage("images参数中的图片为空", c)
 	}
 
-	//返回结构
-	var result = make([]ImagesVO, 0)
-	for _, value := range fh {
-		filename := value.Filename
-		fileSize := value.Size
-
-		//判断文件名
-		filenameSplit := strings.Split(filename, ".")
-		filenameSuffix := filenameSplit[len(filenameSplit)-1]
-		checkResult, _ := util.InSlice(CheckImageType, strings.ToLower(filenameSuffix))
-		if !checkResult {
-			result = append(result, ImagesVO{
-				Path:      "",
-				FileName:  filename,
-				IsSuccess: false,
-				Message:   "图片格式不正确!",
-			})
-			continue
-		}
-
-		//判断文件大小是否合适
-		if (fileSize / 1024 / 1024) > (int64(global.Config.ImagesConfig.Size)) {
-			result = append(result, ImagesVO{
-				Path:      "",
-				FileName:  filename,
-				IsSuccess: false,
-				Message:   filename + ":文件大小超过" + strconv.Itoa(global.Config.ImagesConfig.Size) + "MB",
-			})
-			continue
-		}
-
-		//计算文件内容的hash
-		file, _ := value.Open()
-		ioByte, _ := io.ReadAll(file)
-		md5String := util.MD5(ioByte)
-		defer file.Close()
-
-		//查询图片是否存在
-		var queryBanner models.BannerModel
-		global.DB.Where(&models.BannerModel{Hash: md5String}).Find(&queryBanner)
-		if queryBanner.Hash != "" {
-			result = append(result, ImagesVO{
-				Path:      queryBanner.Path,
-				FileName:  queryBanner.Name,
-				IsSuccess: true,
-				Message:   "图片已经存在",
-			})
-			continue
-		}
-
-		//minio上传图片
-		uploadImage := plugins.UplodaImages{
-			BucketName:  global.Config.MinioConfig.BucketName,
-			File:        value,
-			ContentType: "application/octet-stream",
-		}
-		uploadImagesResult, uploadErro := uploadImage.UploadFile()
-		if uploadErro != nil {
-			result = append(result, ImagesVO{
-				Path:      "",
-				FileName:  filename,
-				IsSuccess: false,
-				Message:   uploadErro.Error(),
-			})
-			continue
-		}
-
-		//添加返回成功值
-		result = append(result, ImagesVO{
-			Path:      uploadImagesResult.Path,
-			FileName:  uploadImagesResult.FileName,
-			IsSuccess: true,
-			Message:   "图片上传成功",
-		})
-
-		//图片入库
-		global.DB.Create(&models.BannerModel{
-			Path: uploadImagesResult.Path,
-			Hash: md5String,
-			Name: uploadImagesResult.FileName,
-		})
-	}
+	//上传图片
+	result := i.ImageService.Upload(fh)
 	res.Ok(result, "图片上传操作成功", c)
 }
 
@@ -135,7 +37,6 @@ func (i ImagesApi) PageList(c *gin.Context) {
 		res.ErrorWithCodeData(err.Error(), res.ArgumentError, c)
 	}
 	//分页查询
-	var BannerModel models.BannerModel = models.BannerModel{}
-	result := plugins.PageQuery(BannerModel, "created_at desc", ipage)
+	result := i.ImageService.PageList(&ipage)
 	res.OkWithData(result, c)
 }

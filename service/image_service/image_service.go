@@ -1,10 +1,9 @@
-package imagesapi
+package imageservice
 
-import imageservice "AuroraPixel/service/image_service"
-
-type ImagesApi struct {
-	ImageService imageservice.ImageService
-}
+import (
+	"AuroraPixel/core/plugins"
+	"mime/multipart"
+)
 
 // 符合场景的图片格式
 var CheckImageType = []string{
@@ -22,4 +21,11 @@ type ImagesVO struct {
 	FileName  string `json:"fileName"`  //文件名
 	IsSuccess bool   `json:"isSuccess"` //是否成功
 	Message   string `json:"message"`   //消息内容
+}
+
+type ImageService interface {
+	//文件上传
+	Upload(files []*multipart.FileHeader) []ImagesVO
+	//分页查询
+	PageList(ipage *plugins.IPage) plugins.PageResult
 }
