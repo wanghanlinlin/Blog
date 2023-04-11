@@ -3,8 +3,6 @@ package routers
 import (
 	_ "AuroraPixel/docs"
 	"AuroraPixel/global"
-	"fmt"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -55,16 +53,16 @@ func cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method
 		origin := c.Request.Header.Get("Origin")
-		var headerKeys []string
-		for k, _ := range c.Request.Header {
-			headerKeys = append(headerKeys, k)
-		}
-		headerStr := strings.Join(headerKeys, ", ")
-		if headerStr != "" {
-			headerStr = fmt.Sprintf("access-control-allow-origin, access-control-allow-headers, %s", headerStr)
-		} else {
-			headerStr = "access-control-allow-origin, access-control-allow-headers"
-		}
+		// var headerKeys []string
+		// for k, _ := range c.Request.Header {
+		// 	headerKeys = append(headerKeys, k)
+		// }
+		// headerStr := strings.Join(headerKeys, ", ")
+		// if headerStr != "" {
+		// 	headerStr = fmt.Sprintf("access-control-allow-origin, access-control-allow-headers, %s", headerStr)
+		// } else {
+		// 	headerStr = "access-control-allow-origin, access-control-allow-headers"
+		// }
 		if origin != "" {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 			c.Header("Access-Control-Allow-Origin", "*")                                       // 这是允许访问所有域
