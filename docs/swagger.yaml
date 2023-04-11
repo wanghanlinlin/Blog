@@ -1,3 +1,68 @@
+definitions:
+  imageservice.ImagesVO:
+    properties:
+      fileName:
+        description: 文件名
+        type: string
+      isSuccess:
+        description: 是否成功
+        type: boolean
+      message:
+        description: 消息内容
+        type: string
+      path:
+        description: 路径
+        type: string
+    type: object
+  models.BannerModel:
+    properties:
+      created_at:
+        description: 创建时间
+        type: string
+      hash:
+        description: hash值判断图片是否唯一
+        type: string
+      id:
+        description: 主键id
+        type: integer
+      name:
+        description: 图片名称
+        type: string
+      path:
+        description: 图片描述
+        type: string
+      update_at:
+        description: 更新时间
+        type: string
+    type: object
+  plugins.PageResult:
+    properties:
+      data:
+        description: 内容
+      pageCount:
+        description: 当前页数量
+        type: integer
+      pageNum:
+        description: 当前页
+        type: integer
+      pageSize:
+        description: 每一页容量
+        type: integer
+      pageTotal:
+        description: 页码总数量
+        type: integer
+      total:
+        description: 总数量
+        type: integer
+    type: object
+  res.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
 host: 127.0.0.1:8080
 info:
   contact:
@@ -11,5 +76,67 @@ info:
   termsOfService: https://github.com/AuroraPixel
   title: AuroraPixel
   version: "1.0"
-paths: {}
+paths:
+  /api/images/page:
+    get:
+      description: 分页查询数据
+      parameters:
+      - description: 当前页
+        in: query
+        name: pageNum
+        required: true
+        type: integer
+      - description: 页容量
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                Data:
+                  allOf:
+                  - $ref: '#/definitions/plugins.PageResult'
+                  - properties:
+                      Data:
+                        items:
+                          $ref: '#/definitions/models.BannerModel'
+                        type: array
+                    type: object
+              type: object
+      summary: 分页列表
+      tags:
+      - 图片
+  /api/images/upload:
+    post:
+      description: 图片上传
+      parameters:
+      - description: 图片
+        in: formData
+        name: images
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                Data:
+                  items:
+                    $ref: '#/definitions/imageservice.ImagesVO'
+                  type: array
+              type: object
+      summary: 图片上传
+      tags:
+      - 图片
 swagger: "2.0"

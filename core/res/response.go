@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	Sucess = 200
-	Erro   = 500
+	Success = 200
+	Erro    = 500
 )
 
 // 响应结构体
@@ -29,15 +29,15 @@ func Result(code int, data any, message string, c *gin.Context) {
 }
 
 func Ok(data any, message string, c *gin.Context) {
-	Result(Sucess, data, message, c)
+	Result(Success, data, message, c)
 }
 
 func OkWithData(data any, c *gin.Context) {
-	Result(Sucess, data, "查询成功", c)
+	Result(Success, data, "查询成功", c)
 }
 
 func OkWithMessage(message string, c *gin.Context) {
-	Result(Sucess, map[string]interface{}{}, message, c)
+	Result(Success, map[string]interface{}{}, message, c)
 }
 
 func Error(data any, message string, c *gin.Context) {
