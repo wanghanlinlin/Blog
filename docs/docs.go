@@ -10,15 +10,15 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://www.test.com",
+        "termsOfService": "https://github.com/AuroraPixel",
         "contact": {
-            "name": "www.test.com",
-            "url": "https://www.test.com",
-            "email": "me@test.me"
+            "name": "AuroraPixel",
+            "url": "https://github.com/AuroraPixel",
+            "email": "wanghanlinlin@126.com"
         },
         "license": {
             "name": "AuroraPixel",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "url": "https://github.com/AuroraPixel"
         },
         "version": "{{.Version}}"
     },

@@ -11,14 +11,14 @@ import (
 // @title AuroraPixel
 // @version 1.0
 // @description AuroraPixel系统API文档
-// @termsOfService https://www.test.com
+// @termsOfService https://github.com/AuroraPixel
 
-// @contact.name www.test.com
-// @contact.url https://www.test.com
-// @contact.email me@test.me
+// @contact.name AuroraPixel
+// @contact.url https://github.com/AuroraPixel
+// @contact.email wanghanlinlin@126.com
 
 // @license.name AuroraPixel
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.url https://github.com/AuroraPixel
 
 // @host 127.0.0.1:8080
 // @BasePath
