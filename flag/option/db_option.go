@@ -1,6 +1,7 @@
-package flag
+package option
 
 import (
+	"AuroraPixel/flag"
 	"AuroraPixel/global"
 	"AuroraPixel/models"
 
@@ -37,4 +38,11 @@ func Makemigrations() {
 	}
 
 	logrus.Info("数据库初始化成功!")
+}
+
+// 根据命令执行不同的函数
+func SwitchOption(option flag.Option) {
+	if option.DB {
+		Makemigrations()
+	}
 }

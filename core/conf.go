@@ -21,8 +21,13 @@ func InitConf() {
 
 // 读取yaml配置文件
 func readConf() *config.Config {
+	//读取命令行配置文件地址
+	option := *global.Option
 	//配置文件地址
 	var yamlPath = "settings.yaml"
+	if option.Setting != "" {
+		yamlPath = option.Setting
+	}
 
 	//初始配置文件体
 	config := &config.Config{}

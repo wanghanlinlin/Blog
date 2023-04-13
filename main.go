@@ -3,6 +3,8 @@ package main
 import (
 	"AuroraPixel/core"
 	"AuroraPixel/flag"
+	"AuroraPixel/flag/option"
+	"AuroraPixel/global"
 	"AuroraPixel/routers"
 
 	"github.com/sirupsen/logrus"
@@ -23,6 +25,8 @@ import (
 // @host 127.0.0.1:8080
 // @BasePath
 func main() {
+	//解析命令行
+	global.Option = flag.Parse()
 	//加载配置文件
 	core.InitConf()
 	//初始化日志
@@ -31,10 +35,10 @@ func main() {
 	core.InitDb()
 	//加载minio
 	core.InitMinio()
-	//数据库迁移
-	option := flag.Parse()
-	if flag.IsWebStop(option) {
-		flag.SwitchOption(option)
+
+	//是否停止项目
+	if flag.IsWebStop(*global.Option) {
+		option.SwitchOption(*global.Option)
 		return
 	}
 

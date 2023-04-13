@@ -2,6 +2,7 @@ package global
 
 import (
 	"AuroraPixel/config"
+	"AuroraPixel/flag"
 
 	"github.com/minio/minio-go/v7"
 	"github.com/sirupsen/logrus"
@@ -15,4 +16,5 @@ var (
 	DB     *gorm.DB
 	Log    *logrus.Logger
 	Minio  *minio.Client
+	Option *flag.Option
 )
