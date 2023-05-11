@@ -1,2 +1,3 @@
 # Blog
- Blog system based on go
+
+Blog system based on go.
