@@ -44,6 +44,8 @@ func initGin() *gin.Engine {
 	routers.SystemRouter(routerGroup)
 	//图片api
 	routers.imagesRouter(routerGroup)
+	//WS系统
+	routers.EchoRouters(routerGroup)
 
 	return router
 }

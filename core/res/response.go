@@ -21,6 +21,7 @@ type Response struct {
 
 // 总返回方法
 func Result(code int, data any, message string, c *gin.Context) {
+	logrus.Errorf("Res,错误代码:%v,错误数据:%v,错误消息:%v", code, data, message)
 	c.JSON(http.StatusOK, Response{
 		code,
 		data,
@@ -72,4 +73,13 @@ func ErrorWithCodeData(data any, code ErrorCode, c *gin.Context) {
 	}
 	Result(Erro, data, "未知错误", c)
 	logrus.Panicf("未知错误")
+}
+
+func ErrorAndContinue(data any, code ErrorCode, c *gin.Context) {
+	message, ok := ErrorCodeMap[code]
+	if ok {
+		Result(int(code), data, message, c)
+		return
+	}
+	Result(Erro, data, "未知错误", c)
 }

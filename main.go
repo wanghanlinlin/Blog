@@ -1,6 +1,7 @@
 package main
 
 import (
+	echoapi "AuroraPixel/api/echo_api"
 	"AuroraPixel/core"
 	"AuroraPixel/flag"
 	"AuroraPixel/flag/option"
@@ -27,6 +28,7 @@ import (
 func main() {
 	//解析命令行
 	global.Option = flag.Parse()
+
 	//加载配置文件
 	core.InitConf()
 	//初始化日志
@@ -35,7 +37,9 @@ func main() {
 	core.InitDb()
 	//加载minio
 	core.InitMinio()
-
+	//加载websocket消息总线
+	global.Sub = echoapi.NewHub()
+	go global.Sub.HubRun()
 	//是否停止项目
 	if flag.IsWebStop(*global.Option) {
 		option.SwitchOption(*global.Option)

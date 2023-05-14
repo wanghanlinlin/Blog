@@ -1,6 +1,7 @@
 package global
 
 import (
+	echoapi "AuroraPixel/api/echo_api"
 	"AuroraPixel/config"
 	"AuroraPixel/flag"
 
@@ -17,4 +18,6 @@ var (
 	Log    *logrus.Logger
 	Minio  *minio.Client
 	Option *flag.Option
+	//webSocket消息总线
+	Sub *echoapi.Hub
 )
